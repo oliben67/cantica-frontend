@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, Consolas, monospace;
+  --color-accent: #7c3aed;
+  --color-accent-light: #ede9fe;
+}
+
+body {
+  font-family: var(--font-sans);
+  @apply bg-white dark:bg-zinc-950 text-zinc-700 dark:text-zinc-300;
+}
+
+h1, h2, h3 {
+  @apply text-zinc-900 dark:text-zinc-100;
+}
