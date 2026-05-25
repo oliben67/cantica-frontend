@@ -32,6 +32,10 @@ tasks:
     desc: Run ESLint over the source tree
     cmd: npm run lint
 
+  lint:fix:
+    desc: Run ESLint and auto-fix all fixable issues
+    cmd: npm run lint -- --fix
+
   # ── Combined workflows ────────────────────────────────────────────────────
   check:
     desc: Run all quality gates — lint, then build
