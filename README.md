@@ -1,73 +1,71 @@
-# React + TypeScript + Vite
+# cantica-web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React SPA for the Cantica prompt registry — browse, search, fork, and manage AI prompts in the browser.
 
-Currently, two official plugins are available:
+Built with **Vite + React + TypeScript + Tailwind CSS**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+# Install dependencies
+task install      # or: npm install
 
-## Expanding the ESLint configuration
+# Start dev server (proxies /v1 to the API at :8042)
+task dev          # or: npm run dev
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+# Production build
+task build        # or: npm run build
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Preview production build locally
+task preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The dev server runs at `http://localhost:5173`. API requests to `/v1` are proxied to the Cantica API at `http://localhost:8042`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Start the API first:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cd ../cantica-api && task serve
+```
+
+---
+
+## Tasks
+
+| Task | Description |
+| --- | --- |
+| `task install` | Install npm dependencies |
+| `task dev` | Start Vite dev server with API proxy |
+| `task build` | Production build to `dist/` |
+| `task preview` | Preview production build |
+| `task lint` | Run ESLint |
+| `task check` | Lint + build |
+| `task clean` | Remove `dist/` and Vite cache |
+| `task clean:all` | Remove `dist/`, cache, and `node_modules/` |
+
+---
+
+## Docker
+
+```bash
+docker build -t cantica-web .
+docker run -p 80:80 cantica-web
+```
+
+The image uses nginx to serve the built SPA and proxy `/v1` to the API.
+Configure the upstream API host via the `CANTICA_API_URL` build arg if needed.
+
+---
+
+## Project structure
+
+```text
+src/
+├── components/   UI components
+├── pages/        Route-level page components
+├── hooks/        Custom React hooks
+├── lib/          API client and utilities
+└── main.tsx      Entry point
 ```
